@@ -1,6 +1,7 @@
 #pragma once
 
 typedef enum {
+    IT_NULL,
     IT_UP,
     IT_DOWN,
     IT_SELECT,

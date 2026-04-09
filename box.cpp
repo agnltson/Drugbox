@@ -1,6 +1,12 @@
+#include "esp_sleep.h"
 #include "box.hpp"
+#include "input_type.hpp"
 
-Box::Box():_screen(new Screen),_menu(new Menu),_state(new BoxState),_should_update(true) {}
+
+RTC_DATA_ATTR unsigned long Box::_last_button_pressed_time = 0;
+
+Box::Box():_screen(new Screen),_menu(new Menu),_state(new BoxState),_should_update_screen(true),_clock(new Clock) {
+}
 
 Box::~Box() {
     delete _screen;
@@ -13,7 +19,19 @@ void Box::init() {
 }
 
 void Box::update() {
-    if (!_should_update) {
+    update_screen();
+}
+
+void Box::handle_input(input_type_e type) {
+    if (type == IT_NULL) {
+        return;
+    }
+    _should_update_screen = true;
+    _menu->handle_input(type);
+}
+
+void Box::update_screen() {
+    if (!_should_update_screen) {
         return;
     }
     auto& d = _screen->get_display();
@@ -29,10 +47,5 @@ void Box::update() {
     } while (d.nextPage());
 
     _screen->sleep();
-    _should_update = false;
-}
-
-void Box::handle_input(input_type_e type) {
-    _should_update = true;
-    _menu->handle_input(type);
+    _should_update_screen = false;
 }

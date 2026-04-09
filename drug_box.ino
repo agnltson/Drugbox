@@ -1,55 +1,50 @@
-#include "esp_sleep.h"
-
 #include "box.hpp"
+#include "power_manager.hpp"
+#include "input_manager.hpp"
 #include "input_type.hpp"
 
-#define BUTTON_PIN 27
-#define MAX_INACTIVITY_TIME_MS 5000
-
-RTC_DATA_ATTR unsigned long last_pressed_time = 0;
+#define BUTTON1_PIN 27
+#define BUTTON2_PIN 25
+#define BUTTON3_PIN 22
 
 Box box;
+InputManager input;
+PowerManager power;
 
-int loop_nb = 0;
+Clock c;
 
 void setup() {
-  box.init();
   Serial.begin(115200);
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
 
-  // verify wake up reason
-  if (esp_sleep_get_wakeup_cause() == ESP_SLEEP_WAKEUP_EXT0) {
-    Serial.println("Woke up by button !");
+  power.begin();
+
+  box.init();
+
+  c.begin();
+
+  esp_sleep_wakeup_cause_t cause = power.wake_up_cause();
+
+  if (cause == ESP_SLEEP_WAKEUP_EXT0) {
+    power.reset_sleep_cooldown();
+    int i = 0;
   }
 
-   if (last_pressed_time == 0) {
-      last_pressed_time = millis();
-   }
+  input.add_button(27, IT_RETURN);
+  input.add_button(25, IT_SELECT);
+  input.add_button(22, IT_UP);
+
+  power.enable_button_wakeup(BUTTON1_PIN);
 }
 
 void loop() {
-  int button_state = digitalRead(BUTTON_PIN);
-
-  if (button_state == LOW) {
-    Serial.println("Button pressed");
-    last_pressed_time = millis();
-    delay(50); // simple anti bounce
-  }
-
-  if (millis() - last_pressed_time >= MAX_INACTIVITY_TIME_MS) {
-    Serial.println("Going in deep sleep after a long anactivity");
-    esp_sleep_enable_ext0_wakeup((gpio_num_t)BUTTON_PIN, 0);
-    esp_deep_sleep_start();
-  }
-
-  if (loop_nb == 2) {
-    box.handle_input(IT_SELECT);
-  } else if (loop_nb == 4) {
-    box.handle_input(IT_RETURN);
+  input_type_e in_type = input.get_input_type();
+  if (in_type == IT_NULL) {
+    power.start_sleep_cooldown();
   } else {
-    box.handle_input(IT_UP);
+    power.reset_sleep_cooldown();
   }
-  loop_nb++;
+  power.update();
+  box.handle_input(in_type);
   box.update();
   delay(50);
 }
