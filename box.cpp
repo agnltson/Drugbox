@@ -2,24 +2,31 @@
 #include "box.hpp"
 #include "input_type.hpp"
 
+#define DEF_NB_COMPARTEMENT 1
 
-RTC_DATA_ATTR unsigned long Box::_last_button_pressed_time = 0;
+RTC_DATA_ATTR std::vector<CompartmentState> Box::_compartment_state = {}; // persistant state across deep sleep
+RTC_DATA_ATTR int Box::_nb_compartment = DEF_NB_COMPARTEMENT; // persistant state across deep sleep
 
-Box::Box():_screen(new Screen),_menu(new Menu),_state(new BoxState),_should_update_screen(true),_clock(new Clock) {
-}
+Box::Box():_screen(new Screen),_menu(new Menu),_should_update_screen(true),_clock(nullptr) {}
 
 Box::~Box() {
     delete _screen;
+    delete _menu;
 }
 
-void Box::init() {
+void Box::init(Clock* clock_p) {
     _screen->init();
     _screen->clear(WHITE);
     _screen->sleep();
+    _clock = clock_p;
 }
 
 void Box::update() {
-    update_screen();
+    Serial.println("Box was updated");
+    if (_should_update_screen) {
+        update_screen();
+    }
+    Time current_time = _clock->get_time();
 }
 
 void Box::handle_input(input_type_e type) {
@@ -31,9 +38,6 @@ void Box::handle_input(input_type_e type) {
 }
 
 void Box::update_screen() {
-    if (!_should_update_screen) {
-        return;
-    }
     auto& d = _screen->get_display();
 
     d.setFullWindow();

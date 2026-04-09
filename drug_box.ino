@@ -1,6 +1,7 @@
 #include "box.hpp"
 #include "power_manager.hpp"
 #include "input_manager.hpp"
+#include "clock.hpp"
 #include "input_type.hpp"
 
 #define BUTTON1_PIN 27
@@ -10,24 +11,27 @@
 Box box;
 InputManager input;
 PowerManager power;
-
-Clock c;
+Clock internal_clock;
 
 void setup() {
   Serial.begin(115200);
 
-  power.begin();
+  internal_clock.begin();
 
-  box.init();
-
-  c.begin();
+  box.init(&internal_clock);
+  power.init(&internal_clock);
 
   esp_sleep_wakeup_cause_t cause = power.wake_up_cause();
 
   if (cause == ESP_SLEEP_WAKEUP_EXT0) {
-    power.reset_sleep_cooldown();
-    int i = 0;
+    Serial.println("Wake by button");
+  } else if (cause == ESP_SLEEP_WAKEUP_TIMER) {
+    Serial.println("Wake by timer");
+  } else {
+    Serial.println("\nWake by regular poweron");
   }
+
+  power.start_sleep_cooldown();
 
   input.add_button(27, IT_RETURN);
   input.add_button(25, IT_SELECT);
@@ -38,13 +42,11 @@ void setup() {
 
 void loop() {
   input_type_e in_type = input.get_input_type();
-  if (in_type == IT_NULL) {
+  if (in_type != IT_NULL) {
     power.start_sleep_cooldown();
-  } else {
-    power.reset_sleep_cooldown();
+    box.handle_input(in_type);
   }
-  power.update();
-  box.handle_input(in_type);
   box.update();
+  power.update();
   delay(50);
 }

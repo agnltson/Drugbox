@@ -2,8 +2,8 @@
 
 #include "power_manager.hpp"
 
-void PowerManager::begin() {
-    _clock.begin();
+void PowerManager::init(Clock* clock_p) {
+    _clock = clock_p;
 }
 
 void PowerManager::enable_button_wakeup(int button_pin) {
@@ -18,9 +18,8 @@ void PowerManager::sleep(uint64_t time_us) {
 }
 
 void PowerManager::update() {
-    if (!_cooldown_started) return;
 
-    Time now = _clock.get_time();
+    Time now = _clock->get_time();
 
     int now_min = now.hour() * 60 + now.minute();
     int last_min = _last_activity.hour() * 60 + _last_activity.minute();
@@ -43,18 +42,8 @@ void PowerManager::update() {
 }
 
 void PowerManager::start_sleep_cooldown() {
-    if (_cooldown_started) {
-        return;
-    }
-
     Serial.println("Cooldown started");
-    _last_activity = _clock.get_time();
-    _cooldown_started = true;
-}
-
-void PowerManager::reset_sleep_cooldown() {
-    _last_activity = _clock.get_time();
-    _cooldown_started = false;
+    _last_activity = _clock->get_time();
 }
 
 esp_sleep_wakeup_cause_t PowerManager::wake_up_cause() {
