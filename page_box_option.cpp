@@ -6,10 +6,13 @@ PageBoxOption::PageBoxOption():Page("Option") {
     _elements.push_back(new UIText(10, 10, WHITE, BLACK, _name));
 }
 
-void PageBoxOption::draw(Screen& screen, int bg, int fg) {
+void PageBoxOption::draw(Screen& screen, BoxState& state, int bg, int fg) {
     for (UIElement* e: _elements) {
-        e->draw(screen, bg, fg);
+        e->draw(screen, state, bg, fg);
     }
 }
 
-void PageBoxOption::handle_input(input_type_e type) {}
+UIMessage PageBoxOption::handle_input(input_type_e type) {
+    UIMessage ans;
+    return ans;
+}

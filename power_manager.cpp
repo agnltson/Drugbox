@@ -11,10 +11,20 @@ void PowerManager::enable_button_wakeup(int button_pin) {
     esp_sleep_enable_ext0_wakeup((gpio_num_t)_button_pin, 0);
 }
 
+void PowerManager::enable_rtc_wakeup(int rtc_pin) {
+    _rtc_pin = rtc_pin;
+
+    pinMode(_rtc_pin, INPUT_PULLUP);
+
+    esp_sleep_enable_ext0_wakeup((gpio_num_t)_rtc_pin, 0);
+}
+
 void PowerManager::sleep(uint64_t time_us) {
-    esp_sleep_enable_timer_wakeup(time_us);
-    delay(200);
     esp_deep_sleep_start();
+}
+
+void PowerManager::set_next_wakeup(Time t) {
+    _clock->set_next_wakeup_int(t);
 }
 
 void PowerManager::update() {

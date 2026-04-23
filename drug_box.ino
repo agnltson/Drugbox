@@ -7,11 +7,16 @@
 #define BUTTON1_PIN 27
 #define BUTTON2_PIN 25
 #define BUTTON3_PIN 22
+#define RTC_INT_PIN 21
 
 Box box;
 InputManager input;
 PowerManager power;
 Clock internal_clock;
+
+// ---------- TODO ----------
+// Anti rebond sur les boutons
+// Configuration pour enlever activation module inutile (eg. wifi, bluetooth)
 
 void setup() {
   Serial.begin(115200);

@@ -2,10 +2,7 @@
 #include "box.hpp"
 #include "input_type.hpp"
 
-#define DEF_NB_COMPARTEMENT 1
-
-RTC_DATA_ATTR std::vector<CompartmentState> Box::_compartment_state = {}; // persistant state across deep sleep
-RTC_DATA_ATTR int Box::_nb_compartment = DEF_NB_COMPARTEMENT; // persistant state across deep sleep
+RTC_DATA_ATTR BoxState Box::_box_state{}; // to have presistant state across deepsleep
 
 Box::Box():_screen(new Screen),_menu(new Menu),_should_update_screen(true),_clock(nullptr) {}
 
@@ -19,22 +16,31 @@ void Box::init(Clock* clock_p) {
     _screen->clear(WHITE);
     _screen->sleep();
     _clock = clock_p;
+    Time t(12, 12);
+    _box_state.get_compartment(0);
 }
 
 void Box::update() {
-    Serial.println("Box was updated");
+    //Serial.println("Box was updated");
     if (_should_update_screen) {
         update_screen();
     }
     Time current_time = _clock->get_time();
 }
 
-void Box::handle_input(input_type_e type) {
+Screen& Box::get_screen() {
+    return *_screen;
+}
+
+UIMessage Box::handle_input(input_type_e type) {
+    UIMessage ans;
     if (type == IT_NULL) {
-        return;
+        return ans;
     }
     _should_update_screen = true;
     _menu->handle_input(type);
+
+    return ans;
 }
 
 void Box::update_screen() {
@@ -46,7 +52,7 @@ void Box::update_screen() {
     do {
         d.fillScreen(WHITE);
 
-        _menu->draw(*_screen, WHITE, BLACK);
+        _menu->draw(*_screen, _box_state, WHITE, BLACK);
 
     } while (d.nextPage());
 

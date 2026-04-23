@@ -5,6 +5,6 @@
 class PageTakePill: public Page {
     public:
     PageTakePill();
-    void draw(Screen& screen, int bg, int fg) override;
-    void handle_input(input_type_e type) override;
+    void draw(Screen& screen, BoxState& state, int bg, int fg) override;
+    UIMessage handle_input(input_type_e type) override;
 };

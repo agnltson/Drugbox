@@ -6,10 +6,13 @@ PageTakePill::PageTakePill():Page("Take pill") {
     _elements.push_back(new UIText(10, 10, WHITE, BLACK, _name));
 }
 
-void PageTakePill::draw(Screen& screen, int bg, int fg) {
+void PageTakePill::draw(Screen& screen, BoxState& state, int bg, int fg) {
     for (UIElement* e: _elements) {
-        e->draw(screen, bg, fg);
+        e->draw(screen, state, bg, fg);
     }
 }
 
-void PageTakePill::handle_input(input_type_e type) {}
+UIMessage PageTakePill::handle_input(input_type_e type) {
+    UIMessage ans;
+    return ans;
+}

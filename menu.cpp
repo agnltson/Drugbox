@@ -8,7 +8,7 @@
 #define LINE_GAP 25
 
 Menu::Menu():_pages{},_selected(nullptr),_over(0) {
-    _pages.push_back(new PageAddPill());
+    //_pages.push_back(new PageAddPill());
     _pages.push_back(new PageCooldown());
     _pages.push_back(new PageTakePill());
     _pages.push_back(new PageBoxOption());
@@ -20,25 +20,25 @@ Menu::Menu():_pages{},_selected(nullptr),_over(0) {
 
 Menu::~Menu() {}
 
-void Menu::draw(Screen& screen, int bg, int fg) {
+void Menu::draw(Screen& screen, BoxState& state, int bg, int fg) {
+    Serial.println("drawing menu");
     if (_selected != nullptr) {
-        _selected->draw(screen, bg, fg);
+        _selected->draw(screen, state, bg, fg);
         return;
     }
     for (int i = 0; i < _elements.size(); ++i) {
         UIElement* e = _elements[i];
         if (i == _over) {
-            e->draw(screen, fg, bg);
+            e->draw(screen, state, fg, bg);
         } else {
-            e->draw(screen, bg, fg);
+            e->draw(screen, state, bg, fg);
         }
     }
 }
 
-void Menu::handle_input(input_type_e type) {
+UIMessage Menu::handle_input(input_type_e type) {
     if (_selected != nullptr && type != IT_RETURN) {
-        //_selected->handle_input(type);
-        return;
+        return _selected->handle_input(type);
     }
     switch(type) {
         case IT_UP:
@@ -51,6 +51,9 @@ void Menu::handle_input(input_type_e type) {
             _selected = nullptr;
             break;
         default:
-            return;
+            UIMessage ans;
+            return ans;
     }
+    UIMessage ans;
+    return ans;
 }

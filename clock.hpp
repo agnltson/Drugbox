@@ -1,6 +1,7 @@
 #pragma once
 
-#include <RtcDS1302.h>
+#include <Wire.h>
+#include <RtcDS3231.h>
 
 #include "time.hpp"
 
@@ -9,7 +10,7 @@ class Clock {
     Clock();
     void begin();
     Time get_time();
+    void set_next_wakeup_int(Time t);
     private:
-    ThreeWire _wire;
-    RtcDS1302<ThreeWire> _rtc;
+    RtcDS3231<TwoWire> _rtc;
 };
