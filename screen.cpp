@@ -3,10 +3,10 @@
 Screen::Screen(): _display(GxEPD2_213_B72(PIN_CS, PIN_DC, PIN_RST, PIN_BUSY)) {}
 
 void Screen::init() {
+    SPI.begin(PIN_SCK, PIN_MISO, PIN_MOSI, PIN_CS);
     this->_display.init(115200);
     this->_display.setRotation(1);
     this->_display.setPartialWindow(0, 0, this->_display.width(), this->_display.height());
-    SPI.begin(PIN_SCK, PIN_MISO, PIN_MOSI, PIN_CS);
 }
 
 void Screen::clear(int color) {

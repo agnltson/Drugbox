@@ -25,11 +25,11 @@ bool Time::operator<(Time& t) {
 }
 
 bool Time::operator>(Time& t) {
-    if (_hour <= t.hour()) {
-        return false;
+    if (_hour > t._hour) {
+        return true;
     }
-    if (_minute <= t.minute()) {
-        return false;
+    if (_hour == t._hour && _minute > t._minute) {
+        return true;
     }
-    return true;
+    return false;
 }

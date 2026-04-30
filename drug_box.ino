@@ -6,8 +6,7 @@
 
 #define BUTTON1_PIN 27
 #define BUTTON2_PIN 25
-#define BUTTON3_PIN 22
-#define RTC_INT_PIN 21
+#define BUTTON3_PIN 32
 
 Box box;
 InputManager input;
@@ -29,20 +28,28 @@ void setup() {
   esp_sleep_wakeup_cause_t cause = power.wake_up_cause();
 
   if (cause == ESP_SLEEP_WAKEUP_EXT0) {
-    Serial.println("Wake by button");
-  } else if (cause == ESP_SLEEP_WAKEUP_TIMER) {
-    Serial.println("Wake by timer");
+      Serial.println("Réveil par alarme RTC");
+      internal_clock.clear_alarm();
+  } else if (cause == ESP_SLEEP_WAKEUP_EXT1) {
+    uint64_t mask = esp_sleep_get_ext1_wakeup_status();
+    if (mask & (1ULL << BUTTON1_PIN)) Serial.println("Réveil par bouton 1");
+    if (mask & (1ULL << BUTTON2_PIN)) Serial.println("Réveil par bouton 2");
+    if (mask & (1ULL << BUTTON3_PIN)) Serial.println("Réveil par bouton 3");
   } else {
     Serial.println("\nWake by regular poweron");
   }
 
+  power.restore_buttons();
+
   power.start_sleep_cooldown();
 
-  input.add_button(27, IT_RETURN);
-  input.add_button(25, IT_SELECT);
-  input.add_button(22, IT_UP);
+  input.add_button(BUTTON1_PIN, IT_RETURN);
+  input.add_button(BUTTON2_PIN, IT_SELECT);
+  input.add_button(BUTTON3_PIN, IT_UP);
 
   power.enable_button_wakeup(BUTTON1_PIN);
+  power.enable_button_wakeup(BUTTON2_PIN);
+  power.enable_button_wakeup(BUTTON3_PIN);
 }
 
 void loop() {

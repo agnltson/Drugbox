@@ -4,9 +4,9 @@
 #include "button.hpp"
 
 Button::Button(int pin):_pin(pin) {
-  pinMode(pin, INPUT_PULLUP);
+  pinMode(pin, INPUT_PULLDOWN);
 }
 
 bool Button::is_pressed() {
-    return digitalRead(_pin) == LOW;
+    return digitalRead(_pin) == HIGH;
 }

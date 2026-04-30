@@ -9,8 +9,8 @@ class Clock {
     public:
     Clock();
     void begin();
+    void clear_alarm();
     Time get_time();
-    void set_next_wakeup_int(Time t);
     private:
     RtcDS3231<TwoWire> _rtc;
 };
