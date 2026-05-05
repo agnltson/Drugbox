@@ -1,23 +1,14 @@
 #include "compartment_state.hpp"
 
-CompartmentState::CompartmentState():_is_configured(false),_reminder_time(0, 0),_forbidden_time(0, 0) {}
+CompartmentState::CompartmentState() : _next_take_time(0, 0), _is_configured(false) {}
 
-void CompartmentState::set_reminder(Time t) {
-    _reminder_time = t;
+void CompartmentState::set_next_take(Time t) {
+    _next_take_time = t;
     _is_configured = true;
 }
 
-void CompartmentState::set_forbidden_until(Time t) {
-    _forbidden_time = t;
-    _is_configured = true;
-}
-
-Time CompartmentState::get_reminder_time() {
-    return _reminder_time;
-}
-
-Time CompartmentState::get_forbidden_time() {
-    return _forbidden_time;
+Time CompartmentState::get_next_take() {
+    return _next_take_time;
 }
 
 bool CompartmentState::is_configured() {

@@ -1,8 +1,8 @@
 #include "clock.hpp"
 #include <RtcUtility.h>
 
-#define SDA_PIN 4
-#define SCL_PIN 0
+#define SDA_PIN 21
+#define SCL_PIN 22
 
 Clock::Clock() : _rtc(Wire) {}
 

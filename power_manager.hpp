@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "esp_sleep.h"
+#include "box.hpp"
 #include "clock.hpp"
 
 class PowerManager {
@@ -15,7 +16,7 @@ class PowerManager {
     esp_sleep_wakeup_cause_t wake_up_cause();
     void restore_buttons();
     void set_next_wakeup(Time t);
-    void update();
+    void update(Box& box);
     void start_sleep_cooldown();
     private:
     Clock* _clock;

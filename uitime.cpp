@@ -6,7 +6,7 @@ UITime::UITime(int x, int y, int bg, int fg, int id)
 UITime::~UITime() {}
 
 void UITime::draw(Screen& screen, BoxState& state, int bg, int fg) {
-    Time time = state.get_compartment(_compartment_id).get_reminder_time();
+    Time time = state.get_compartment(_compartment_id)->get_next_take();
     char buf[6];
     snprintf(buf, sizeof(buf), "%02d:%02d", (int)time.hour(), (int)time.minute());
 

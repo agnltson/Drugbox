@@ -41,7 +41,7 @@ UIMessage Menu::handle_input(input_type_e type) {
         return _selected->handle_input(type);
     }
     switch(type) {
-        case IT_UP:
+        case IP_NEXT:
             _over = (_over+1) % _pages.size();
             break;
         case IT_SELECT:

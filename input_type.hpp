@@ -2,7 +2,7 @@
 
 typedef enum {
     IT_NULL,
-    IT_UP,
+    IP_NEXT,
     IT_DOWN,
     IT_SELECT,
     IT_RETURN,

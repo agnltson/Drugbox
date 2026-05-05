@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "screen.hpp"
-#include "menu.hpp"
+#include "flat_menu.hpp"
 #include "box_state.hpp"
 #include "interactive.hpp"
 #include "button.hpp"
@@ -19,15 +19,17 @@ class Box: public Interactive {
     public:
     Box();
     ~Box();
-    void init(Clock* clock_p);
+    void init(Clock* clock);
     void update();
     Screen& get_screen();
     UIMessage handle_input(input_type_e type) override;
+    Time get_next_take(Time now);
+    void show_standby(Time now, Time next);
     private:
     void update_screen();
-    Screen* _screen;
-    Menu* _menu;
     Clock* _clock;
+    Screen* _screen;
+    FlatMenu* _menu;
     static BoxState _box_state;
     bool _should_update_screen;
 };

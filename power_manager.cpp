@@ -44,15 +44,12 @@ void PowerManager::apply_wakeup_sources() {
 }
 
 void PowerManager::sleep(uint64_t time_us) {
+    esp_sleep_enable_timer_wakeup(time_us);
     apply_wakeup_sources();
     esp_deep_sleep_start();
 }
 
-void PowerManager::set_next_wakeup(Time t) {
-    _clock->set_next_wakeup_int(t);
-}
-
-void PowerManager::update() {
+void PowerManager::update(Box& box) {
 
     Time now = _clock->get_time();
 
@@ -72,8 +69,16 @@ void PowerManager::update() {
 
     if (diff >= _cooldown_minutes) {
         Serial.println("Cooldown finished -> sleeping");
+        Time next_take = box.get_next_take(now);
 
-        sleep(60ULL * 1000000ULL);
+        box.show_standby(now, next_take);
+
+        int next_min = next_take.hour() * 60 + next_take.minute();
+        int diff_min = next_min - now_min;
+        if (diff_min <= 0) diff_min += 24 * 60;
+        
+        uint64_t sleep_us = (uint64_t)diff_min * 60ULL * 1000000ULL;
+        sleep(sleep_us);
     }
 }
 
