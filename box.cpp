@@ -27,8 +27,7 @@ void Box::update() {
 }
 
 void Box::show_standby(Time now, Time next) {
-    char buf_now[8], buf_next[16];
-    snprintf(buf_now,  sizeof(buf_now),  "%02d:%02d", now.hour(), now.minute());
+    char buf_next[16];
     snprintf(buf_next, sizeof(buf_next), "Rappel %02d:%02d", next.hour(), next.minute());
 
     auto& d = _screen->get_display();
@@ -36,9 +35,7 @@ void Box::show_standby(Time now, Time next) {
     d.firstPage();
     do {
         d.fillScreen(WHITE);
-        UIText t_now (20, 40, WHITE, BLACK, buf_now);
-        UIText t_next(20, 70, WHITE, BLACK, buf_next);
-        t_now .draw(*_screen, _box_state, WHITE, BLACK);
+        UIText t_next(20, 60, WHITE, BLACK, buf_next);
         t_next.draw(*_screen, _box_state, WHITE, BLACK);
     } while (d.nextPage());
     _screen->sleep();

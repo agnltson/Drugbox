@@ -2,7 +2,7 @@
 
 BoxState::BoxState() : _nb_compartment(DEF_NB_COMPARTMENT), _current_time(0, 0) {
     for (int i = 0; i < DEF_NB_COMPARTMENT; ++i) {
-        _compartment_state[i].set_next_take(Time(12, 15));
+        _compartment_state[i].set_next_take(Time(0, 0));
     }
 }
 
