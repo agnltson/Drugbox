@@ -1,9 +1,9 @@
 #include "flat_menu.hpp"
 #include "uitext.hpp"
 
-#define LINE_H 30
+#define LINE_H 20
 #define LINE_START 20      // y de la première ligne de contenu
-#define TITLE_Y 10         // y du titre
+#define TITLE_Y 20         // y du titre
 #define MARGIN_X 10        // x de tous les éléments
 #define LIST_START 20      // y du premier élément de liste (draw_list)
 
@@ -40,8 +40,8 @@ void FlatMenu::draw_action(Screen& screen, BoxState& state, int bg, int fg) {
             Time next = state.get_next_take(state.get_current_time());
             char buf[16];
             snprintf(buf, sizeof(buf), "Interdit: %02d:%02d", next.hour(), next.minute());
-            UIText t1(MARGIN_X, LINE_START,            bg, fg, buf);
-            UIText t2(MARGIN_X, LINE_START + LINE_H,   bg, fg, "retour=menu");
+            UIText t1(MARGIN_X, LINE_START + LINE_H,   bg, fg, buf);
+            UIText t2(MARGIN_X, LINE_START + 2*LINE_H, bg, fg, "retour=menu");
             t1.draw(screen, state, bg, fg);
             t2.draw(screen, state, bg, fg);
             break;
@@ -50,9 +50,9 @@ void FlatMenu::draw_action(Screen& screen, BoxState& state, int bg, int fg) {
             char buf[24];
             if (a.state == ASTATE_CONFIRM) {
                 snprintf(buf, sizeof(buf), "+%dh apres prise", a.param);
-                UIText t1(MARGIN_X, LINE_START,            bg, fg, buf);
-                UIText t2(MARGIN_X, LINE_START + LINE_H,   bg, fg, "ok=valider");
-                UIText t3(MARGIN_X, LINE_START + LINE_H*2, bg, fg, "retour=annuler");
+                UIText t1(MARGIN_X, LINE_START + LINE_H,   bg, fg, buf);
+                UIText t2(MARGIN_X, LINE_START + LINE_H*2, bg, fg, "ok=valider");
+                UIText t3(MARGIN_X, LINE_START + LINE_H*3, bg, fg, "retour=annuler");
                 t1.draw(screen, state, bg, fg);
                 t2.draw(screen, state, bg, fg);
                 t3.draw(screen, state, bg, fg);
@@ -72,10 +72,10 @@ void FlatMenu::draw_action(Screen& screen, BoxState& state, int bg, int fg) {
         case ACTION_SET_REMINDER: {
             char buf[16];
             snprintf(buf, sizeof(buf), "Dans: %02dh", a.param);
-            UIText t1(MARGIN_X, LINE_START,            bg, fg, buf);
-            UIText t2(MARGIN_X, LINE_START + LINE_H,   bg, fg, "suiv=+1h");
-            UIText t3(MARGIN_X, LINE_START + LINE_H*2, bg, fg, "ok=sauvegarder");
-            UIText t4(MARGIN_X, LINE_START + LINE_H*3, bg, fg, "retour=annuler");
+            UIText t1(MARGIN_X, LINE_START + LINE_H,   bg, fg, buf);
+            UIText t2(MARGIN_X, LINE_START + LINE_H*2, bg, fg, "suiv=+1h");
+            UIText t3(MARGIN_X, LINE_START + LINE_H*3, bg, fg, "ok=sauvegarder");
+            UIText t4(MARGIN_X, LINE_START + LINE_H*4, bg, fg, "retour=annuler");
             t1.draw(screen, state, bg, fg);
             t2.draw(screen, state, bg, fg);
             t3.draw(screen, state, bg, fg);

@@ -3,8 +3,10 @@
 #include <GxEPD2_BW.h>
 #include <SPI.h>
 #include <Fonts/FreeSansBold12pt7b.h>
+#include <Fonts/FreeSansBold9pt7b.h>
 
-#define FONT &FreeSansBold12pt7b
+#define BIG_FONT &FreeSansBold12pt7b
+#define SMALL_FONT &FreeSansBold9pt7b
 
 #define BLACK GxEPD_BLACK
 #define WHITE GxEPD_WHITE
