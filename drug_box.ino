@@ -38,9 +38,11 @@ void setup() {
 
   if (cause == ESP_SLEEP_WAKEUP_TIMER) {
       //Serial.println("Réveil par timer");
-      digitalWrite(BUZZER_PIN, HIGH); // ON
-      delay(1000);
-      digitalWrite(BUZZER_PIN, LOW);  // OFF
+      for (int i = 0; i < 3; ++i) {
+        digitalWrite(BUZZER_PIN, HIGH); // ON
+        delay(1500);
+        digitalWrite(BUZZER_PIN, LOW);  // OFF
+      }
   } /*else if (cause == ESP_SLEEP_WAKEUP_EXT1) {
     uint64_t mask = esp_sleep_get_ext1_wakeup_status();
     if (mask & (1ULL << BUTTON1_PIN)) Serial.println("Réveil par bouton 1");
