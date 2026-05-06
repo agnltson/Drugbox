@@ -63,12 +63,12 @@ void PowerManager::update(Box& box) {
         diff += 24 * 60;
     }
 
-    Serial.print("now="); Serial.print(now_min);
-    Serial.print(" last="); Serial.print(last_min);
-    Serial.print(" diff="); Serial.println(diff);
+    //Serial.print("now="); Serial.print(now_min);
+    //Serial.print(" last="); Serial.print(last_min);
+    //Serial.print(" diff="); Serial.println(diff);
 
     if (diff >= _cooldown_minutes) {
-        Serial.println("Cooldown finished -> sleeping");
+        //Serial.println("Cooldown finished -> sleeping");
         Time next_take = box.get_next_take(now);
 
         box.show_standby(now, next_take);
@@ -83,7 +83,7 @@ void PowerManager::update(Box& box) {
 }
 
 void PowerManager::start_sleep_cooldown() {
-    Serial.println("Cooldown started");
+    //Serial.println("Cooldown started");
     _last_activity = _clock->get_time();
 }
 

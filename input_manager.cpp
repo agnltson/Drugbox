@@ -12,8 +12,8 @@ void InputManager::add_button(int pin, input_type_e t) {
 input_type_e InputManager::get_input_type() {
     for (int i = 0; i < _buttons.size(); ++i) {
         if (_buttons[i]->is_pressed()) {
-            Serial.print("Button pressed: ");
-            Serial.println(i+1);
+            //Serial.print("Button pressed: ");
+            //Serial.println(i+1);
 
             return _buttons_types[i];
         }
