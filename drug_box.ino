@@ -40,8 +40,9 @@ void setup() {
       //Serial.println("Réveil par timer");
       for (int i = 0; i < 3; ++i) {
         digitalWrite(BUZZER_PIN, HIGH); // ON
-        delay(1500);
+        delay(1000);
         digitalWrite(BUZZER_PIN, LOW);  // OFF
+        delay(1000);
       }
   } /*else if (cause == ESP_SLEEP_WAKEUP_EXT1) {
     uint64_t mask = esp_sleep_get_ext1_wakeup_status();
