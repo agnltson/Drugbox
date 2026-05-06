@@ -10,6 +10,9 @@ void UIText::draw(Screen& screen, BoxState& state, int bg, int fg) {
     uint16_t w, h;
     display_t& d = screen.get_display();
 
+    d.setFont(FONT);
+    d.setTextSize(1);
+
     d.getTextBounds(_text, _x, _y, &x1, &y1, &w, &h);
 
     int padding = 2;

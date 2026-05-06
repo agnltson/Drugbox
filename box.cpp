@@ -78,7 +78,7 @@ UIMessage Box::handle_input(input_type_e type) {
 void Box::update_screen() {
     auto& d = _screen->get_display();
 
-    d.setFullWindow();
+    d.setPartialWindow(0, 0, d.width(), d.height());
 
     d.firstPage();
     do {

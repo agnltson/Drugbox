@@ -2,7 +2,9 @@
 
 #include <GxEPD2_BW.h>
 #include <SPI.h>
-#include <Fonts/FreeMonoBold9pt7b.h>
+#include <Fonts/FreeSansBold12pt7b.h>
+
+#define FONT &FreeSansBold12pt7b
 
 #define BLACK GxEPD_BLACK
 #define WHITE GxEPD_WHITE

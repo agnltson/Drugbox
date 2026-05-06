@@ -3,6 +3,9 @@
 #include "input_manager.hpp"
 #include "clock.hpp"
 #include "input_type.hpp"
+#include <WiFi.h>
+#include "esp_bt.h"
+#include "driver/adc.h"
 
 #define BUTTON1_PIN 27
 #define BUTTON2_PIN 25
@@ -14,11 +17,16 @@ InputManager input;
 PowerManager power;
 Clock internal_clock;
 
-// ---------- TODO ----------
-// Anti rebond sur les boutons
-// Configuration pour enlever activation module inutile (eg. wifi, bluetooth)
-
 void setup() {
+  // --- Opti basse conso ---
+  setCpuFrequencyMhz(80);
+
+  WiFi.mode(WIFI_OFF);
+  WiFi.disconnect(true);
+
+  btStop();
+  // ------------------------
+
   Serial.begin(115200);
   pinMode(BUZZER_PIN, OUTPUT);
 
